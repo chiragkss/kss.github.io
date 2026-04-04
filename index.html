@@ -1,48 +1,106 @@
-function sendReminder() {
-  var sheet = SpreadsheetApp.getActiveSheet();
-  var data = sheet.getDataRange().getValues();
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Krishna Networks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  // Get tomorrow's date
-  var today = new Date();
-  today.setDate(today.getDate() + 1);
-
-  for (var i = 1; i < data.length; i++) {
-
-    var expiry = new Date(data[i][2]);
-
-    // Check if expiry = tomorrow
-    if (expiry.toDateString() == today.toDateString()) {
-
-      var mobile = data[i][1].toString().trim();
-      var link = data[i][4];
-
-      var messageText = "Your plan expires tomorrow. Recharge now: " + link;
-
-      var options = {
-        method: "post",
-        headers: {
-          "apikey": "sk_534c36bb054b4d36803e382449688a28",
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        payload: {
-          channel: "whatsapp",
-          source: "918237719867", 
-          destination: mobile,     // 7039291191
-          message: JSON.stringify({
-            type: "text",
-            text: messageText
-          }),
-          "src.name": "a1f8195b-2074-453e-b88d-8ff70ea0f851"
-        }
-      };
-
-      try {
-        var response = UrlFetchApp.fetch("https://api.gupshup.io/sm/api/v1/msg", options);
-        Logger.log(response.getContentText());
-      } catch (e) {
-        Logger.log("Error: " + e);
-      }
-
+  <style>
+    body {
+      font-family: Arial;
+      margin: 0;
+      background: #f5f5f5;
     }
-  }
-}
+
+    header {
+      background: #0c31ac;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+
+    .hero {
+      padding: 40px;
+      text-align: center;
+      background: linear-gradient(135deg, #ff156e, #0c31ac);
+      color: white;
+    }
+
+    .plans {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 30px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      width: 220px;
+      border-radius: 10px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .btn {
+      display: inline-block;
+      background: #ff156e;
+      color: white;
+      padding: 10px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    .whatsapp {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: green;
+      color: white;
+      padding: 15px;
+      border-radius: 50%;
+      text-decoration: none;
+      font-size: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  Krishna Networks 🚀
+</header>
+
+<div class="hero">
+  <h1>Fast Internet Service</h1>
+  <p>Unlimited Plans | 24x7 Support</p>
+  <a class="btn" href="https://wa.me/918237719867">Get Connection</a>
+</div>
+
+<div class="plans">
+
+  <div class="card">
+    <h3>50 Mbps</h3>
+    <p>₹499</p>
+    <a class="btn" href="https://rzp.io/l/yourlink1">Pay Now</a>
+  </div>
+
+  <div class="card">
+    <h3>100 Mbps</h3>
+    <p>₹699</p>
+    <a class="btn" href="https://rzp.io/l/yourlink2">Pay Now</a>
+  </div>
+
+  <div class="card">
+    <h3>200 Mbps</h3>
+    <p>₹999</p>
+    <a class="btn" href="https://rzp.io/l/yourlink3">Pay Now</a>
+  </div>
+
+</div>
+
+<a class="whatsapp" href="https://wa.me/919545425678">💬</a>
+
+</body>
+</html>
