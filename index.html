@@ -3,14 +3,15 @@ function sendReminder() {
   var data = sheet.getDataRange().getValues();
 
   var today = new Date();
-  today.setDate(today.getDate() + 1);
+  today.setDate(today.getDate() + 1); // tomorrow
 
   for (var i = 1; i < data.length; i++) {
+
     var expiry = new Date(data[i][2]);
 
     if (expiry.toDateString() == today.toDateString()) {
 
-      var mobile = data[i][1];
+      var mobile = data[i][1].toString().trim();
       var link = data[i][4];
 
       var message = "Your plan expires tomorrow. Recharge now: " + link;
@@ -18,19 +19,25 @@ function sendReminder() {
       var options = {
         method: "post",
         headers: {
-          "apikey": "YOUR_API_KEY",
+          "apikey": "a1f8195b-2074-453e-b88d-8ff70ea0f851",
           "Content-Type": "application/x-www-form-urlencoded"
         },
         payload: {
           channel: "whatsapp",
-          source: "YOUR_GUPSHUP_NUMBER",
+          source: "8237719867",
           destination: mobile,
           message: message,
           "src.name": "a1f8195b-2074-453e-b88d-8ff70ea0f851"
         }
       };
 
-      UrlFetchApp.fetch("https://api.gupshup.io/sm/api/v1/msg", options);
+      try {
+        var response = UrlFetchApp.fetch("https://api.gupshup.io/sm/api/v1/msg", options);
+        Logger.log(response.getContentText());
+      } catch (e) {
+        Logger.log("Error: " + e);
+      }
+
     }
   }
 }
