@@ -1,205 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Krishna Networks</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+function sendReminder() {
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var data = sheet.getDataRange().getValues();
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Rubik&display=swap" rel="stylesheet">
+  var today = new Date();
+  today.setDate(today.getDate() + 1);
 
-  <style>
-    :root {
-      --primary-color: #ff156e;
-      --secondary-color: #0c31ac;
-      --text-color: #757F95;
-      --heading-color: #0C1020;
+  for (var i = 1; i < data.length; i++) {
+    var expiry = new Date(data[i][2]);
+
+    if (expiry.toDateString() == today.toDateString()) {
+
+      var mobile = data[i][1];
+      var link = data[i][4];
+
+      var message = "Your plan expires tomorrow. Recharge now: " + link;
+
+      var options = {
+        method: "post",
+        headers: {
+          "apikey": "YOUR_API_KEY",
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        payload: {
+          channel: "whatsapp",
+          source: "YOUR_GUPSHUP_NUMBER",
+          destination: mobile,
+          message: message,
+          "src.name": "a1f8195b-2074-453e-b88d-8ff70ea0f851"
+        }
+      };
+
+      UrlFetchApp.fetch("https://api.gupshup.io/sm/api/v1/msg", options);
     }
-
-    body {
-      margin: 0;
-      font-family: 'Rubik', sans-serif;
-      background: #f5f7fa;
-    }
-
-    /* NAVBAR */
-    header {
-      display: flex;
-      justify-content: space-between;
-      padding: 15px 30px;
-      background: white;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    .logo {
-      font-weight: bold;
-      font-size: 20px;
-      color: var(--secondary-color);
-    }
-
-    .btn {
-      background: var(--primary-color);
-      color: white;
-      padding: 8px 15px;
-      border-radius: 5px;
-      text-decoration: none;
-    }
-
-    /* HERO */
-    .hero {
-      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-      color: white;
-      padding: 80px 20px;
-      text-align: center;
-    }
-
-    .hero h1 {
-      font-size: 36px;
-    }
-
-    .hero p {
-      font-size: 18px;
-    }
-
-    /* FEATURES */
-    .features {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 40px 20px;
-      gap: 20px;
-    }
-
-    .feature {
-      width: 220px;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-
-    /* PLANS */
-    .plans {
-      padding: 40px 20px;
-      text-align: center;
-    }
-
-    .cards {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    .card {
-      background: white;
-      padding: 20px;
-      width: 240px;
-      border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      transition: 0.3s;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-    }
-
-    .price {
-      font-size: 24px;
-      color: var(--primary-color);
-    }
-
-    /* CONTACT */
-    .contact {
-      text-align: center;
-      padding: 30px;
-    }
-
-    /* FOOTER */
-    footer {
-      background: #111;
-      color: white;
-      text-align: center;
-      padding: 15px;
-    }
-
-    /* WHATSAPP */
-    .whatsapp {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #25D366;
-      color: white;
-      padding: 15px;
-      border-radius: 50%;
-      font-size: 20px;
-      text-decoration: none;
-    }
-  </style>
-</head>
-
-<body>
-
-<!-- NAVBAR -->
-<header>
-  <div class="logo">Krishna Networks</div>
-  <a class="btn" href="#">Login</a>
-</header>
-
-<!-- HERO -->
-<div class="hero">
-  <h1>Fast Internet for Home & Business</h1>
-  <p>Unlimited Plans | High Speed | 24x7 Support</p>
-  <a class="btn" href="https://wa.me/919545425678">Get Connection</a>
-</div>
-
-<!-- FEATURES -->
-<div class="features">
-  <div class="feature">⚡ High Speed Fiber</div>
-  <div class="feature">📶 Stable Connection</div>
-  <div class="feature">📞 24x7 Support</div>
-</div>
-
-<!-- PLANS -->
-<div class="plans">
-  <h2>Our Plans</h2>
-
-  <div class="cards">
-    <div class="card">
-      <h3>50 Mbps</h3>
-      <div class="price">₹499</div>
-      <p>Unlimited Data</p>
-      <a class="btn" href="#">Pay Now</a>
-    </div>
-
-    <div class="card">
-      <h3>100 Mbps</h3>
-      <div class="price">₹699</div>
-      <p>Unlimited Data</p>
-      <a class="btn" href="#">Pay Now</a>
-    </div>
-
-    <div class="card">
-      <h3>200 Mbps</h3>
-      <div class="price">₹999</div>
-      <p>Unlimited Data</p>
-      <a class="btn" href="#">Pay Now</a>
-    </div>
-  </div>
-</div>
-
-<!-- CONTACT -->
-<div class="contact">
-  📞 9545425678
-</div>
-
-<!-- FOOTER -->
-<footer>
-  © 2026 Krishna Networks
-</footer>
-
-<!-- WHATSAPP -->
-<a class="whatsapp" href="https://wa.me/919545425678">💬</a>
-
-</body>
-</html>
+  }
+}
